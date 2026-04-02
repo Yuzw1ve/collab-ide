@@ -1,0 +1,23 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: collab-ide-backend
+    environment:
+      AI_REVIEWER_API_KEY: ${AI_REVIEWER_API_KEY:-}
+      AI_REVIEWER_API_ENDPOINT: ${AI_REVIEWER_API_ENDPOINT:-}
+      AI_REVIEWER_MODEL: ${AI_REVIEWER_MODEL:-gpt-4o-mini}
+      AI_REVIEWER_TIMEOUT: ${AI_REVIEWER_TIMEOUT:-20}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_CHAT_IDS: ${TELEGRAM_CHAT_IDS:-}
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: collab-ide-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
